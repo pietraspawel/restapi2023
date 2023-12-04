@@ -1,0 +1,11 @@
+{
+    "autoload": {
+        "psr-4": {
+            "pietras\\": "src/"
+        }
+    },
+    "require": {
+        "twig/twig": "^3.5",
+        "symfony/yaml": "^5.4"
+    }
+}
