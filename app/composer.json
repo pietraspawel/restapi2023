@@ -1,7 +1,7 @@
 {
     "autoload": {
         "psr-4": {
-            "pietras\\": "src/"
+            "pietras\\RestApi\\": "src/"
         }
     },
     "require": {
