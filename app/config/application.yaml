@@ -1,6 +1,2 @@
 # MODE: dev|prod
-# cache_path: Twig cache folder, false to turn cache off
-# templates_path: Twig templates filepath
 mode: dev
-cache_path: "../cache"
-templates_path: "../template"
