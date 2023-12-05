@@ -4,33 +4,35 @@
  * Front controller.
  */
 
+use pietras\RestApi\RestMethods;
+
 $file = null;
 
 if ($url1 == "products" and $url2 == "") {
     if ($requestMethod == "GET") {
-        $file = C . "get-products.php";
+        $file = "../controller/get-products.php";
     }
     if ($requestMethod == "POST") {
-        $file = C . "post-product.php";
+        $file = "../controller/post-product.php";
     }
 }
 if ($url1 == "products" and $url2 != "") {
     if ($requestMethod == "GET") {
-        $file = C . "get-single-product.php";
+        $file = "../controller/get-single-product.php";
     }
     if ($requestMethod == "PUT") {
-        $file = C . "put-product.php";
+        $file = "../controller/put-product.php";
     }
     if ($requestMethod == "DELETE") {
-        $file = C . "delete-product.php";
+        $file = "../controller/delete-product.php";
     }
 }
 if ($url1 == "help") {
-    $file = C . "help.php";
+    $file = "../controller/help.php";
 }
 if ($file !== null) {
-    include "$file";
+    include $file;
 } else {
-    $rest->send404();
+    RestMethods::send404();
     die();
 }
