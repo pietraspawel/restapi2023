@@ -30,6 +30,9 @@ if ($url1 == "products" and $url2 != "") {
 if ($url1 == "help") {
     $file = "../controller/help.php";
 }
+if ($url1 == "test") {
+    $file = "../controller/test.php";
+}
 if ($file !== null) {
     include $file;
 } else {
