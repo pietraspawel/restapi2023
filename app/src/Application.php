@@ -66,4 +66,20 @@ class Application
         $parameter = isset($pathSegments[$index]) ? $pathSegments[$index] : null;
         return $parameter;
     }
+
+    /**
+     * Ex: url = "https://something.com/aaa/bbb?ccc=1&ddd=eee".
+     * getQueryParameterValue("ccc") == 1
+     * getQueryParameterValue("ddd") == "eee"
+     * getQueryParameterValue("eee") === null
+     */
+    public function getQueryParameterValue(string $parameterName): mixed
+    {
+        $queryString = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
+        if ($queryString === null) {
+            return null;
+        }
+        parse_str($queryString, $queryParameters);
+        return $queryParameters[$parameterName] ?? null;
+    }
 }

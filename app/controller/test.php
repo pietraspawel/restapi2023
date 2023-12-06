@@ -7,5 +7,9 @@ use pietras\RestApi\UserModel;
 echo "<pre>";
 
 //////
+
+$result = $application->getQueryParameterValue("page");
+var_dump($result);
+
 $result = ProductModel::fetchAll($application, 3, 10);
 var_dump($result);
