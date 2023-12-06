@@ -40,6 +40,27 @@ class ProductModel
         return self::resultToArrayCollection($result);
     }
 
+    public static function fetchByIdAsArray(Application $application, int $recordId): array
+    {
+        $database = $application->getDatabase();
+        $sql = "
+            SELECT 
+                product.*, 
+                product_name.name AS name,
+                product_name.description AS description,
+                language.abbr AS language
+            FROM product 
+            INNER JOIN product_name ON product.id = product_name.product_id
+            INNER JOIN language ON product_name.language_id = language.id
+            WHERE product.id = :recordId
+        ";
+        $stmt = $database->prepare($sql);
+        $stmt->bindParam("recordId", $recordId, \PDO::PARAM_INT);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        return self::resultToArrayCollection($result);
+    }
+
     private static function resultToArrayCollection(array $array): array
     {
         $coll = [];
