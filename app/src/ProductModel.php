@@ -20,7 +20,7 @@ class ProductModel
         $this->translation = $param["translation"];
     }
 
-    public static function fetchAll(Application $application, int $page = 1, int $pagesize = 10): array
+    public static function fetchAllAsArray(Application $application, int $page = 1, int $pagesize = 10): array
     {
         $database = $application->getDatabase();
         $offset = ($page - 1) * $pagesize;
@@ -37,13 +37,12 @@ class ProductModel
         $stmt = $database->prepare($sql);
         $stmt->execute();
         $result = $stmt->fetchAll();
-        return self::resultToCollection($result);
+        return self::resultToArrayCollection($result);
     }
 
-    private static function resultToCollection(array $array): array
+    private static function resultToArrayCollection(array $array): array
     {
         $coll = [];
-        $objColl = [];
         foreach ($array as $row) {
             $coll[$row["id"]]["id"] = $row["id"];
             $coll[$row["id"]]["price"] = $row["price"];
@@ -51,9 +50,6 @@ class ProductModel
             $coll[$row["id"]]["translation"][$row["language"]]["name"] = $row["name"];
             $coll[$row["id"]]["translation"][$row["language"]]["description"] = $row["description"];
         }
-        foreach ($coll as $key => $obj) {
-            $objColl[$key] = new self($obj);
-        }
-        return $objColl;
+        return $coll;
     }
 }
