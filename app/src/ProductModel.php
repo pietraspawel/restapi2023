@@ -20,6 +20,31 @@ class ProductModel
         $this->translation = $param["translation"];
     }
 
+    /**
+     * @param  Application $application Application object.
+     * @param  int $page                Page number.
+     * @param  int $pagesize            Page size.
+     * @return array
+     *   [
+     *       [
+     *           "id" => int,
+     *           "price" => int,
+     *           "quantity" => int,
+     *           "translation" =>
+     *               [
+     *                   "name" => string,
+     *                   "description" => string
+     *               ],
+     *           next_translation =>
+     *               [
+     *                   ...
+     *               ]
+     *       ],
+     *       [
+     *           ..next product..
+     *       ]
+     *   ]
+     */
     public static function fetchAllAsArray(Application $application, int $page = 1, int $pagesize = 10): array
     {
         $database = $application->getDatabase();
@@ -40,6 +65,27 @@ class ProductModel
         return self::resultToArrayCollection($result);
     }
 
+    /**
+     * @param  Application $application Application object.
+     * @param  int $recordId            Product id.
+     * @return array
+     *   [
+     *       [
+     *           "id" => int,
+     *           "price" => int,
+     *           "quantity" => int,
+     *           "translation" =>
+     *               [
+     *                   "name" => string,
+     *                   "description" => string
+     *               ],
+     *           next_translation =>
+     *               [
+     *                   ...
+     *               ]
+     *       ]
+     *   ]
+     */
     public static function fetchByIdAsArray(Application $application, int $recordId): array
     {
         $database = $application->getDatabase();
