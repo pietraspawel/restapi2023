@@ -3,21 +3,25 @@
 use pietras\RestApi\LanguageModel;
 use pietras\RestApi\ProductModel;
 
-var_dump(LanguageModel::fetchAllAsArray($application));
-var_dump(LanguageModel::fetchAllAbbreviationsAsArray($application));
+// $validLanguages = LanguageModel::fetchAllAbbreviationsAsArray($application);
+// var_dump($validLanguages);
 
-if (in_array("en", LanguageModel::fetchAllAsArray($application))) {
-    var_dump(true);
-}
-
-if (in_array("en", [ "en" ])) {
-    var_dump(true);
-}
-
-exit;
-
+// exit;
 
 $data = [
-
+    "price" => 1234,
+    "quantity" => 12,
+    "translation" => [
+        "en" => [
+            "name" => "Lion"
+        ],
+        "pl" => [
+            "name" => "Lew"
+        ],
+        "xx" => [
+            "name" => "abc"
+        ]
+    ]
 ];
-ProductModel::insertByArray($application, $data);
+$result = ProductModel::insertByArray($application, $data);
+var_dump($result);

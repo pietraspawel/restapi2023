@@ -12,6 +12,9 @@ class ProductModel
     private $quantity;
     private $translation;
 
+    private static $database;
+    private static $validLanguages;
+
     public function __construct(array $param)
     {
         $this->id = $param["id"];
@@ -137,62 +140,73 @@ class ProductModel
      */
     public static function insertByArray(Application $application, array $data): bool
     {
-        $database = $application->getDatabase();
-        $database->beginTransaction();
-        $error = false;
-        $translationAdded = false;
+        self::$database = $application->getDatabase();
+        if (!isset($data["translation"])) {
+            self::$database->rollBack();
+            return false;
+        }
 
+        self::$validLanguages = LanguageModel::fetchAllAbbreviationsAsArray($application);
+        $translationAdded = false;
         $price = $data["price"] ?? 0;
         $quantity = $data["quantity"] ?? 0;
 
+        self::$database->beginTransaction();
         $sql = "INSERT INTO product (price, quantity) VALUES (:price, :quantity)";
-        $stmt = $database->prepare($sql);
+        $stmt = self::$database->prepare($sql);
         $stmt->bindParam("price", $price, \PDO::PARAM_INT);
         $stmt->bindParam("quantity", $quantity, \PDO::PARAM_INT);
         if (!$stmt->execute()) {
-            $database->rollBack();
+            self::$database->rollBack();
             return false;
         }
-        $lastId = $database->lastInsertId();
+        $lastId = self::$database->lastInsertId();
 
-        if (!isset($data["translation"])) {
-            $database->rollBack();
-            return false;
-        }
         foreach ($data["translation"] as $languageName => $translationData) {
-            $result = $this->insertTranslation($languageName, $translationData);
-            if ($result === true) {
-                $translationAdded = true;
+            if (in_array($languageName, self::$validLanguages)) {
+                $result = self::insertTranslation($lastId, $languageName, $translationData);
+                if ($result === true) {
+                    $translationAdded = true;
+                } else {
+                    self::$database->rollBack();
+                    return false;
+                }
             }
         }
-        if (!$error and $translationAdded) {
-            $database->commit();
+
+        if ($translationAdded) {
+            self::$database->commit();
             return true;
         } else {
-            $database->rollBack();
+            self::$database->rollBack();
             return false;
         }
     }
 
-    private static function insertTranslation(string $languageName, array $translationData): bool
+    private static function insertTranslation(int $productId, string $languageName, array $translationData): bool
     {
-        // if (in_array($languageName, $database->validLanguages)) {
-        //     if (!isset($translationData["name"])) {
-        //         $database->rollback();
-        //         return false;
-        //     }
-        //     $name = $translationData["name"];
-        //     $description = isset($translationData["description"]) ? $translationData["description"] : "";
+        if (!isset($translationData["name"])) {
+            self::$database->rollback();
+            return false;
+        }
+        $name = $translationData["name"];
+        $description = $translationData["description"] ?? "";
 
-        //     $languageId = array_search($languageName, $database->validLanguages);
-        //     $sql = "INSERT INTO product_name (product_id, language_id, name, description) VALUES (?,?,?,?)";
-        //     $stmt = $database->prepare($sql);
-        //     $stmt->bind_param("iiss", $lastId, $languageId, $name, $description);
-        //     if (!$stmt->execute()) {
-        //         $error = true;
-        //     } else {
-        //         $translationAdded = true;
-        //     }
-        // }
+        $languageId = array_search($languageName, self::$validLanguages);
+        $sql = "
+            INSERT INTO product_name 
+            (product_id, language_id, name, description) 
+            VALUES (:productId, :languageId, :name, :description)
+        ";
+        $stmt = self::$database->prepare($sql);
+        $stmt->bindParam("productId", $productId, \PDO::PARAM_INT);
+        $stmt->bindParam("languageId", $languageId, \PDO::PARAM_INT);
+        $stmt->bindParam("name", $name);
+        $stmt->bindParam("description", $description);
+        if (!$stmt->execute()) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }
