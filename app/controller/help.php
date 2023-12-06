@@ -72,7 +72,7 @@ Domyślnie przyjmują wartości, odpowiednio: <code>1</code> i <code>10</code>.<
 <p><code>price</code> - nieobowiązkowe, domyślnie = <code>0</code><br />
 <code>quantity</code> - nieobowiązkowe, domyślnie = <code>0</code><br />
 <code><i>nazwa_języka</i></code> - musi być zdefiniowany przynajmniej jeden, 
-w przykładowej bazie danych są to: pl, en i xx.<br />
+w przykładowej bazie danych są to: pl i en.<br />
 <code>name</code> - musi być określona nazwa przynajmniej w jednym języku<br />
 <code>description</code> - nieobowiązkowe, domyślnie pusty string</p>
 
