@@ -16,6 +16,15 @@ class UserMethods
         $this->database = $application->getDatabase();
     }
 
+    public function fetchUser(?string $username)
+    {
+        $sql = "SELECT * FROM user WHERE username = :username";
+        $stmt = $this->database->prepare($sql);
+        $stmt->bindParam(':username', $username);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
     public function isReadingPermitted(?string $username, ?string $password): bool
     {
         $user = $this->fetchUser($username);
@@ -44,25 +53,5 @@ class UserMethods
             return false;
         }
         return true;
-    }
-
-    public function fetchUser(?string $username)
-    {
-        $sql = "SELECT * FROM user WHERE username = :username";
-        $stmt = $this->database->prepare($sql);
-        $stmt->bindParam(':username', $username, \PDO::PARAM_STR);
-        $stmt->execute();
-
-        $arr = array();
-
-        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-            $arr[] = $row;
-        }
-
-        if (!empty($arr)) {
-            return current($arr);
-        } else {
-            return false;
-        }
     }
 }
