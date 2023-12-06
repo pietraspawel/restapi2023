@@ -13,7 +13,7 @@
 <h2>Autoryzacja.</h2>
 <p>Odbywa się za pomocą Basic Auth.<br />
 Dane dla testowej bazy:<br />
-<code>testuser:12345678</code></p>
+<code>testuser:123</code></p>
 
 <h2>Pobranie wszystkich produktów z bazy.</h2>
 <h4>Request:</h4>
