@@ -8,7 +8,7 @@ echo "<pre>";
 
 //////
 
-$result = $application->getPageParameterValue();
+$result = $application->getPagesizeParameterValue();
 var_dump($result);
 
 $result = ProductModel::fetchAll($application, 3, 10);

@@ -15,6 +15,7 @@ class Application
     private $mode;
 
     public const DEAFULT_PAGE = 1;
+    public const DEAFULT_PAGESIZE = 10;
 
     public function __construct(string $configFilepath = "../config/application.yaml")
     {
@@ -90,6 +91,15 @@ class Application
         $value = (int)$this->getQueryParameterValue("page");
         if (empty($value)) {
             return self::DEAFULT_PAGE;
+        }
+        return $value;
+    }
+
+    public function getPagesizeParameterValue(): int
+    {
+        $value = (int)$this->getQueryParameterValue("pagesize");
+        if (empty($value)) {
+            return self::DEAFULT_PAGESIZE;
         }
         return $value;
     }
