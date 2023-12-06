@@ -8,7 +8,7 @@ echo "<pre>";
 
 //////
 
-$result = $application->getQueryParameterValue("page");
+$result = $application->getPageParameterValue();
 var_dump($result);
 
 $result = ProductModel::fetchAll($application, 3, 10);

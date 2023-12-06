@@ -14,6 +14,8 @@ class Application
     private $database;
     private $mode;
 
+    public const DEAFULT_PAGE = 1;
+
     public function __construct(string $configFilepath = "../config/application.yaml")
     {
         $this->config = Yaml::parseFile($configFilepath);
@@ -81,5 +83,14 @@ class Application
         }
         parse_str($queryString, $queryParameters);
         return $queryParameters[$parameterName] ?? null;
+    }
+
+    public function getPageParameterValue(): int
+    {
+        $value = (int)$this->getQueryParameterValue("page");
+        if (empty($value)) {
+            return self::DEAFULT_PAGE;
+        }
+        return $value;
     }
 }
