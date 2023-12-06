@@ -54,11 +54,11 @@ class Application
 
     /**
      * Ex: url = "https://something.com/aaa/bbb".
-     * getUrlParam(1) == "aaa"
-     * getUrlParam(2) == "bbb"
-     * getUrlParam(3) === null
+     * getPathElement(1) == "aaa"
+     * getPathElement(2) == "bbb"
+     * getPathElement(3) === null
      */
-    public function getUrlParam(int $index): ?string
+    public function getPathElement(int $index): ?string
     {
         $url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
         $parsedUrl = parse_url($url);
