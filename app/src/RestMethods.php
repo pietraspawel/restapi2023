@@ -33,6 +33,12 @@ class RestMethods
         header("Cache-Control: no-cache, no-store, must-revalidate");
     }
 
+    public static function send401()
+    {
+        header($_SERVER["SERVER_PROTOCOL"] . " 401 Authorization Required.");
+        exit;
+    }
+
     public static function send404()
     {
         header($_SERVER["SERVER_PROTOCOL"] . " 404 Source not found.");
