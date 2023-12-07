@@ -142,7 +142,6 @@ class ProductModel
     {
         self::$database = $application->getDatabase();
         if (!isset($data["translation"])) {
-            self::$database->rollBack();
             return false;
         }
 
