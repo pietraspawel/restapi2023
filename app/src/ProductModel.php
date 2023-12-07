@@ -345,4 +345,18 @@ class ProductModel
 
         return true;
     }
+
+    public static function delete(Application $application, int $productId): bool
+    {
+        self::$database = $application->getDatabase();
+
+        $sql = "DELETE FROM product WHERE id = :productId";
+        $stmt = self::$database->prepare($sql);
+        $stmt->bindParam("productId", $productId, \PDO::PARAM_INT);
+        if (!$stmt->execute()) {
+            self::$database->rollBack();
+            return false;
+        }
+        return true;
+    }
 }
