@@ -3,7 +3,7 @@
 use pietras\RestApi\LanguageModel;
 use pietras\RestApi\ProductModel;
 
-$productId = 44;
+$productId = 42;
 $data = [
     "price" => 1,
     "quantity" => 10,
@@ -23,6 +23,14 @@ $data = [
         "zz" => [
             "name" => "błędny język",
             "description" => "błędny język",
+        ],
+    ]
+];
+
+$data = [
+    "translation" => [
+        "en" => [
+            "name" => "bez description",
         ],
     ]
 ];

@@ -249,10 +249,10 @@ class ProductModel
             return false;
         }
 
-        // $result = self::prepareUpdateProductNameTable($product);
-        // if (!$result) {
-        //     return false;
-        // }
+        $result = self::prepareUpdateProductNameTable($application, $product);
+        if (!$result) {
+            return false;
+        }
 
         self::$database->commit();
         return true;
@@ -301,6 +301,48 @@ class ProductModel
             self::$database->rollBack();
             return false;
         }
+        return true;
+    }
+
+    private static function prepareUpdateProductNameTable(Application $application, array $product): bool
+    {
+        $product = current($product);
+        $origin = self::fetchByIdAsArray($application, $product["id"]);
+        $origin = current($origin);
+        if (isset($product["translation"])) {
+            foreach ($product["translation"] as $languageAbbr => $translation) {
+                if (in_array($languageAbbr, self::$validLanguages)) {
+                    if (isset($origin["translation"][$languageAbbr])) {
+                        $languageId = array_search($languageAbbr, self::$validLanguages);
+                        $sql = "
+                            UPDATE product_name 
+                            SET 
+                                name = :name,
+                                description = :description
+                            WHERE 
+                                product_id = :productId
+                                AND language_id = :languageId
+                        ";
+                        $stmt = self::$database->prepare($sql);
+                        $stmt->bindParam("name", $translation["name"], \PDO::PARAM_STR);
+                        $stmt->bindParam("description", $translation["description"], \PDO::PARAM_STR);
+                        $stmt->bindParam("productId", $product["id"], \PDO::PARAM_INT);
+                        $stmt->bindParam("languageId", $languageId, \PDO::PARAM_INT);
+                        if (!$stmt->execute()) {
+                            self::$database->rollBack();
+                            return false;
+                        }
+                    } else {
+                        $result = self::insertTranslation($product["id"], $languageAbbr, $translation);
+                        if (!$result) {
+                            self::$database->rollBack();
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+
         return true;
     }
 }
