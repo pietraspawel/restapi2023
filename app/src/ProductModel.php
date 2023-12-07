@@ -238,10 +238,10 @@ class ProductModel
         self::$database = $application->getDatabase();
         self::$validLanguages = LanguageModel::fetchAllAbbreviationsAsArray($application);
 
-        // $product = self::getUpdatedModel($application, $productId, $data);
-        // if (empty($product)) {
-        //     return false;
-        // }
+        $product = self::getUpdatedModel($application, $productId, $data);
+        if (empty($product)) {
+            return false;
+        }
         // self::$database->beginTransaction();
         // $result = self::prepareUpdateProductTable($application, $product);
         // if (!$result) {
@@ -256,5 +256,36 @@ class ProductModel
 
         // self::$database->commit();
         return true;
+    }
+
+    private static function getUpdatedModel(Application $application, int $productId, array $data): array
+    {
+        self::$database = $application->getDatabase();
+        self::$validLanguages = LanguageModel::fetchAllAbbreviationsAsArray($application);
+
+        $product = self::fetchByIdAsArray($application, $productId);
+        if (empty($product)) {
+            return [];
+        }
+        $product[$productId]["price"] = $data["price"] ?? $product[$productId]["price"];
+        $product[$productId]["quantity"] = $data["quantity"] ?? $product[$productId]["quantity"];
+        if (isset($data["translation"])) {
+            foreach ($data["translation"] as $languageAbbr => $translation) {
+                if (in_array($languageAbbr, self::$validLanguages)) {
+                    if (isset($translation["name"])) {
+                        $product[$productId]["translation"][$languageAbbr]["name"] =
+                            $translation["name"];
+                    }
+                    if (
+                        isset($translation["description"])
+                        && isset($product[$productId]["translation"][$languageAbbr]["name"])
+                    ) {
+                        $product[$productId]["translation"][$languageAbbr]["description"] =
+                            $translation["description"];
+                    }
+                }
+            }
+        }
+        return $product;
     }
 }
