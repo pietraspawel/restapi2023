@@ -3,6 +3,9 @@
 use pietras\RestApi\LanguageModel;
 use pietras\RestApi\ProductModel;
 
+echo "Hi";
+exit;
+
 // $validLanguages = LanguageModel::fetchAllAbbreviationsAsArray($application);
 // var_dump($validLanguages);
 
