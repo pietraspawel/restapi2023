@@ -85,7 +85,7 @@ dodane do bazy (pod warunkiem oczywiście, że język istnieje w bazie).</p>
 <h2>Przykłady zapytań w PHP cURL.</h2>
 <h4>Pobranie wszystkich produktów.</h4>
 <pre><code>$ch = curl_init("http://demo.restapi.pietraspawel.pl/products");
-curl_setopt($ch, CURLOPT_USERPWD, "testuser:12345678");
+curl_setopt($ch, CURLOPT_USERPWD, "testuser:123");
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
 curl_exec($ch);
 curl_close($ch);
@@ -94,7 +94,7 @@ die();
 
 <h4>Pobranie konkretnego produku.</h4>
 <pre><code>$ch = curl_init("http://demo.restapi.pietraspawel.pl/products/10");
-curl_setopt($ch, CURLOPT_USERPWD, "testuser:12345678");
+curl_setopt($ch, CURLOPT_USERPWD, "testuser:123");
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
 curl_exec($ch);
 curl_close($ch);
@@ -114,7 +114,7 @@ die();
     }
 }';
 $ch = curl_init("http://demo.restapi.pietraspawel.pl/products");
-curl_setopt($ch, CURLOPT_USERPWD, "testuser:12345678");
+curl_setopt($ch, CURLOPT_USERPWD, "testuser:123");
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
 curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 curl_exec($ch);
@@ -136,7 +136,7 @@ die();
     }
 }';
 $ch = curl_init("http://demo.restapi.pietraspawel.pl/products/10");
-curl_setopt($ch, CURLOPT_USERPWD, "testuser:12345678");
+curl_setopt($ch, CURLOPT_USERPWD, "testuser:123");
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
 curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 curl_exec($ch);
@@ -146,7 +146,7 @@ die();
 
 <h4>Usunięcie produktu.</h4>
 <pre><code>$ch = curl_init("http://demo.restapi.pietraspawel.pl/products/12");
-curl_setopt($ch, CURLOPT_USERPWD, "testuser:12345678");
+curl_setopt($ch, CURLOPT_USERPWD, "testuser:123");
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
 curl_exec($ch);
 curl_close($ch);
