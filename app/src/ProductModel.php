@@ -242,19 +242,19 @@ class ProductModel
         if (empty($product)) {
             return false;
         }
-        // self::$database->beginTransaction();
-        // $result = self::prepareUpdateProductTable($application, $product);
+
+        self::$database->beginTransaction();
+        $result = self::prepareUpdateProductTable($product);
+        if (!$result) {
+            return false;
+        }
+
+        // $result = self::prepareUpdateProductNameTable($product);
         // if (!$result) {
-        //     self::$database->rollBack();
-        //     return false;
-        // }
-        // $result = self::prepareUpdateProductNameTable($application, $product);
-        // if (!$result) {
-        //     self::$database->rollBack();
         //     return false;
         // }
 
-        // self::$database->commit();
+        self::$database->commit();
         return true;
     }
 
@@ -287,5 +287,20 @@ class ProductModel
             }
         }
         return $product;
+    }
+
+    private static function prepareUpdateProductTable(array $product): bool
+    {
+        $product = current($product);
+        $sql = "UPDATE product SET price = :price, quantity = :quantity WHERE id = :productId";
+        $stmt = self::$database->prepare($sql);
+        $stmt->bindParam("productId", $product["id"], \PDO::PARAM_INT);
+        $stmt->bindParam("price", $product["price"], \PDO::PARAM_INT);
+        $stmt->bindParam("quantity", $product["quantity"], \PDO::PARAM_INT);
+        if (!$stmt->execute()) {
+            self::$database->rollBack();
+            return false;
+        }
+        return true;
     }
 }
