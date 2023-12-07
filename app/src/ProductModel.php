@@ -122,6 +122,7 @@ class ProductModel
     }
 
     /**
+     * @param  Application $application Application object.
      * @param  array $data
      *   [
      *       "price" => int,                     // if omitted, default is 0
@@ -207,5 +208,53 @@ class ProductModel
         } else {
             return true;
         }
+    }
+
+    /**
+     * Update product.
+     *
+     * Every field is optional.
+     *
+     * @param  Application $application Application object.
+     * @param  int         $productId   Product id.
+     * @param  array       $data        Array of changes.
+     *   [
+     *       "price" => int,
+     *       "quantity" => int,
+     *       "translation" => [
+     *           name => [
+     *               "name" => string,
+     *               "description" => string
+     *           ],
+     *           name => [
+     *               ...
+     *           ]
+     *       ]
+     *   ]
+     * @return bool Return true if everything is ok, else return false.
+     */
+    public static function updateByArray(Application $application, int $productId, array $data): bool
+    {
+        self::$database = $application->getDatabase();
+        self::$validLanguages = LanguageModel::fetchAllAbbreviationsAsArray($application);
+
+        // $product = self::getUpdatedModel($application, $productId, $data);
+        // if (empty($product)) {
+        //     return false;
+        // }
+        // self::$database->beginTransaction();
+        // $result = self::prepareUpdateProductTable($application, $product);
+        // if (!$result) {
+        //     self::$database->rollBack();
+        //     return false;
+        // }
+        // $result = self::prepareUpdateProductNameTable($application, $product);
+        // if (!$result) {
+        //     self::$database->rollBack();
+        //     return false;
+        // }
+
+        // self::$database->commit();
+        return true;
     }
 }
