@@ -71,7 +71,7 @@ Domyślnie przyjmują wartości, odpowiednio: <code>1</code> i <code>10</code>.<
 <h4>Dla zapytania POST:</h4>
 <p><code>price</code> - nieobowiązkowe, domyślnie = <code>0</code><br />
 <code>quantity</code> - nieobowiązkowe, domyślnie = <code>0</code><br />
-<code><i>nazwa_języka</i></code> - musi być zdefiniowany przynajmniej jeden, 
+<code>nazwa_języka</code> - musi być zdefiniowany przynajmniej jeden, 
 w przykładowej bazie danych są to: pl i en.<br />
 <code>name</code> - musi być określona nazwa przynajmniej w jednym języku<br />
 <code>description</code> - nieobowiązkowe, domyślnie pusty string</p>
@@ -84,21 +84,21 @@ dodane do bazy (pod warunkiem oczywiście, że język istnieje w bazie).</p>
 
 <h2>Przykłady zapytań w PHP cURL.</h2>
 <h4>Pobranie wszystkich produktów.</h4>
-<pre><code>$ch = curl_init("http://demo.restapi.pietraspawel.pl/products");
+<pre><code>$ch = curl_init("https://demo.restapi.pietraspawel.pl/products");
 curl_setopt($ch, CURLOPT_USERPWD, "testuser:123");
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
 curl_exec($ch);
 curl_close($ch);
-die();
+exit;
 </code></pre>
 
 <h4>Pobranie konkretnego produku.</h4>
-<pre><code>$ch = curl_init("http://demo.restapi.pietraspawel.pl/products/10");
+<pre><code>$ch = curl_init("https://demo.restapi.pietraspawel.pl/products/10");
 curl_setopt($ch, CURLOPT_USERPWD, "testuser:123");
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
 curl_exec($ch);
 curl_close($ch);
-die();
+exit;
 </code></pre>
 
 <h4>Dodanie produktu.</h4>
@@ -113,13 +113,13 @@ die();
         "name": "second product"
     }
 }';
-$ch = curl_init("http://demo.restapi.pietraspawel.pl/products");
+$ch = curl_init("https://demo.restapi.pietraspawel.pl/products");
 curl_setopt($ch, CURLOPT_USERPWD, "testuser:123");
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
 curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 curl_exec($ch);
 curl_close($ch);
-die();
+exit;
 </code></pre>
 
 <h4>Aktualizacja produktu.</h4>
@@ -135,22 +135,22 @@ die();
         "description": "Lorem ipsum"
     }
 }';
-$ch = curl_init("http://demo.restapi.pietraspawel.pl/products/10");
+$ch = curl_init("https://demo.restapi.pietraspawel.pl/products/10");
 curl_setopt($ch, CURLOPT_USERPWD, "testuser:123");
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
 curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 curl_exec($ch);
 curl_close($ch);
-die();
+exit;
 </code></pre>
 
 <h4>Usunięcie produktu.</h4>
-<pre><code>$ch = curl_init("http://demo.restapi.pietraspawel.pl/products/12");
+<pre><code>$ch = curl_init("https://demo.restapi.pietraspawel.pl/products/12");
 curl_setopt($ch, CURLOPT_USERPWD, "testuser:123");
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
 curl_exec($ch);
 curl_close($ch);
-die();
+exit;
 </code></pre>
 
     </body>
